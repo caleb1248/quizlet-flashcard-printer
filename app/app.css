@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+:root {
+  --color-foreground: var(--color-gray-950);
+  --color-background: var(--color-gray-50);
+  --color-muted-foreground: var(--color-gray-500);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-foreground: var(--color-white);
+    --color-background: var(--color-gray-950);
+    --color-muted-foreground: var(--color-gray-400);
+  }
+}
+
+@theme {
+  --foreground: var(--color-foreground);
+  --background: var(--color-background);
+  --muted-foreground: var(--color-muted-foreground);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+}
