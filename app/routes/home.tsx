@@ -11,15 +11,13 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center p-4 pt-7">
+    <div className="flex min-h-screen flex-col items-center p-4 py-7">
       <main className="w-full max-w-4xl text-center">
         <section>
           <h1 className="mb-8 text-4xl font-bold">
             Print your Quizlet sets as double sided flashcards
           </h1>
-          <h2 className="text-muted-foreground mb-5 text-xl">
-            Quizlet made great again
-          </h2>
+          <h2 className="text-muted-foreground mb-5 text-xl">Quizlet made great again</h2>
         </section>
         <section>
           <div className="grid gap-6 md:grid-cols-2">
@@ -46,7 +44,10 @@ export default function Home() {
           </div>
           <div className="mt-10 text-lg">
             What are you waiting for?
-            <Link to="/print" className="start-button group ml-5 rounded-lg bg-blue-500 px-8 py-4 text-xl text-white transition-all hover:bg-blue-500/90 active:bg-blue-500/80">
+            <Link
+              to="/print"
+              className="start-button group ml-5 rounded-lg bg-blue-500 px-8 py-4 text-xl text-white transition-all hover:bg-blue-500/90 active:bg-blue-500/80"
+            >
               Start printing now
               <ArrowRight className="ml-2 inline-block transition-transform ease-out group-active:translate-x-1" />
             </Link>
