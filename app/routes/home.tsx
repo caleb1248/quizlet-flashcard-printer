@@ -4,7 +4,7 @@ import { ArrowRight, DollarSign, Printer, Sliders } from 'lucide-react';
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: 'New React Router App' },
+    { title: 'Quizlet Flashcard Printer' },
     { name: 'description', content: 'Welcome to React Router!' },
   ];
 }
@@ -17,7 +17,9 @@ export default function Home() {
           <h1 className="mb-8 text-4xl font-bold">
             Print your Quizlet sets as double sided flashcards
           </h1>
-          <h2 className="text-muted-foreground mb-5 text-xl">Quizlet made great again</h2>
+          <h2 className="text-muted-foreground mb-5 text-xl">
+            Quizlet made great again
+          </h2>
         </section>
         <section>
           <div className="grid gap-6 md:grid-cols-2">

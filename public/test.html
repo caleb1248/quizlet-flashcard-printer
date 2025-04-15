@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      /* Screen styles for preview */
+      .full-page {
+        width: 100%;
+        height: 100vh;
+        border: 1px solid black;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        background-color: red;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+      }
+
+      .page-2 {
+        margin-top: 20px; /* Applied only on screen */
+      }
+
+      @page {
+        margin: 0;
+      }
+
+      /* Print-specific styles */
+      @media print {
+        body {
+          margin: 0;
+          padding: 0;
+        }
+
+        .full-page {
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          margin: 0;
+          padding: 0;
+          border: 1px solid black;
+          position: relative;
+          /* page-break-after: always; Each page breaks after */
+        }
+
+        .page-2 {
+          margin-top: 0 !important; /* Forcefully override screen margin */
+          page-break-before: always; /* Ensure new page for page-2 */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="full-page page-1">
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+      <div>hi</div>
+    </div>
+    <div class="full-page page-2">Page 2: Full-page content</div>
+  </body>
+</html>

@@ -1,9 +1,15 @@
 @import 'tailwindcss';
 
+html,
+body {
+  height: 100vh;
+}
 :root {
   --foreground: var(--color-gray-950);
   --background: var(--color-gray-50);
   --muted-foreground: var(--color-gray-500);
+  --muted: var(--color-gray-200);
+  --border: var(--color-gray-300);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -11,6 +17,8 @@
     --foreground: var(--color-white);
     --background: var(--color-gray-950);
     --muted-foreground: var(--color-gray-400);
+    --muted: var(--color-gray-800);
+    --border: var(--color-gray-600);
   }
 }
 
@@ -18,17 +26,76 @@
   --color-foreground: var(--foreground);
   --color-background: var(--background);
   --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --animate-fadein: fadein 0.2s ease-out;
+  --animate-dropdown-expand: dropdown-expand 0.2s ease-out;
 }
 
-h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
+@layer base {
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
-.button {
-  @apply cursor-pointer  py-3 px-5 rounded-lg  transition-all;
+@layer components {
+  .button {
+    @apply rounded-lg px-5 py-3 transition-all enabled:cursor-pointer;
+  }
+
+  .button.primary {
+    @apply bg-blue-500 text-white hover:shadow-md enabled:hover:bg-blue-500/90 enabled:active:bg-blue-500/80 disabled:bg-gray-400;
+  }
+
+  .icon-button {
+    @apply rounded-full p-2 transition-colors hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-gray-700;
+  }
 }
 
-.button.primary {
-  @apply bg-blue-500 text-white hover:bg-blue-500/90 active:bg-blue-500/80 hover:shadow-md;
+@layer utilities {
+  .vertical-scroll {
+    overflow-y: auto;
+    scrollbar-color: var(--color-gray-500) transparent;
+  }
+  .vertical-scroll::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  .animated-chevron {
+    /* transition: all 0.2s ease-in-out; */
+  }
+
+  .animated-chevron.up {
+    transition: all 0.2s ease-in-out;
+    d: path('m6 15 6-6 6 6');
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dropdown-expand {
+  from {
+    max-height: 0;
+  }
+  to {
+    max-height: calc(60 * var(--spacing));
+  }
+}
+
+select {
+  appearance: none;
 }
