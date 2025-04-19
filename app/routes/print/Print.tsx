@@ -9,6 +9,7 @@ interface PrintOptions {
   rows: number;
   columns: number;
   showBorders: boolean;
+  orientation: Orientation;
 }
 
 function PrintLayoutGenerator({
@@ -18,28 +19,29 @@ function PrintLayoutGenerator({
   data: Card[];
   options: PrintOptions;
 }) {
-  const pageStyle = `bg-muted-foreground grid h-screen w-full ${options.showBorders ? 'gap-0.5 p-0.5 print:bg-gray-300' : 'bg-transparent'}`;
-
+  const pageStyle = `grid print:h-screen w-full border ${options.showBorders ? 'border-muted-foreground' : 'border-transparent'} ${options.orientation === 'landscape' ? 'not-print:aspect-3/2' : 'not-print:aspect-2/3'}`;
+  const cardStyle = `flex items-center justify-center p-2 text-center border ${options.showBorders ? 'border-muted-foreground' : 'border-transparent'}`;
   const cardsPerPage = options.rows * options.columns;
   const pages: React.ReactNode[] = [];
-
   for (let i = 0; i < data.length; i += cardsPerPage) {
     const currentPageCards = data.slice(i, i + cardsPerPage);
+    if (currentPageCards.length < cardsPerPage) {
+      currentPageCards.push(
+        ...Array(cardsPerPage - currentPageCards.length).fill({
+          front: '',
+          back: '',
+        }),
+      );
+    }
 
     const frontCards = currentPageCards.map((card, idx) => (
-      <div
-        key={`front-${i}-${idx}`}
-        className="bg-background flex items-center justify-center p-2 text-center print:bg-white"
-      >
+      <div key={`front-${i}-${idx}`} className={cardStyle}>
         {card.front}
       </div>
     ));
 
     const backCards = currentPageCards.map((card, idx) => (
-      <div
-        key={`back-${i}-${idx}`}
-        className="bg-background flex items-center justify-center p-2 text-center print:bg-white"
-      >
+      <div key={`back-${i}-${idx}`} className={cardStyle}>
         {card.back}
       </div>
     ));
@@ -143,6 +145,7 @@ export default function Print({ data }: { data: Card[] }) {
                 type="number"
                 value={rows}
                 onChange={(e) => setRows(e.target.value)}
+                onFocus={(e) => e.target.select()}
                 className="w-full rounded-lg border border-gray-300 p-2"
               />
             </div>
@@ -199,6 +202,7 @@ export default function Print({ data }: { data: Card[] }) {
               rows,
               columns,
               showBorders,
+              orientation,
             }}
           />
         </div>

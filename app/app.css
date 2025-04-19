@@ -53,7 +53,7 @@ body {
   }
 
   .button.primary {
-    @apply bg-accent enabled:hover:bg-accent/90 enabled:active:bg-accent/80 text-white hover:shadow-md disabled:bg-gray-400;
+    @apply bg-accent enabled:hover:bg-accent/90 enabled:active:bg-accent/80 text-white hover:shadow-md disabled:bg-gray-500 dark:disabled:bg-gray-600;
   }
 
   .icon-button {
@@ -107,7 +107,6 @@ select {
 }
 
 body {
-  -webkit-print-color-adjust: exact !important;
   print-color-adjust: exact !important;
   scrollbar-color: var(--color-gray-500) transparent;
 }
