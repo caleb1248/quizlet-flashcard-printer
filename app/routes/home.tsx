@@ -48,7 +48,7 @@ export default function Home() {
             What are you waiting for?
             <Link
               to="/print"
-              className="start-button group ml-5 rounded-lg bg-blue-500 px-8 py-4 text-xl text-white transition-all hover:bg-blue-500/90 active:bg-blue-500/80"
+              className="button primary group ml-5 px-8 py-4 text-xl"
             >
               Start printing now
               <ArrowRight className="ml-2 inline-block transition-transform ease-out group-active:translate-x-1" />

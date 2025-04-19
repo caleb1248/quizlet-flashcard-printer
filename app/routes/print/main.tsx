@@ -9,7 +9,7 @@ export default function Page() {
 
   return (
     <div className="h-full w-full p-5">
-      <style id="page-settings">{`@page {orientation: portrait;margin:0;}`}</style>
+      <style id="page-settings">{`@page {orientation: portrait;}`}</style>
       {state === 'preprint' ? (
         <PrePrint data={cards} onComplete={() => setState('print')} />
       ) : (

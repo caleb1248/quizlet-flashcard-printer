@@ -10,6 +10,7 @@ body {
   --muted-foreground: var(--color-gray-500);
   --muted: var(--color-gray-200);
   --border: var(--color-gray-300);
+  --accent: var(--color-blue-600);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,6 +29,7 @@ body {
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-muted: var(--muted);
+  --color-accent: var(--accent);
   --animate-fadein: fadein 0.2s ease-out;
   --animate-dropdown-expand: dropdown-expand 0.2s ease-out;
 }
@@ -51,11 +53,15 @@ body {
   }
 
   .button.primary {
-    @apply bg-blue-500 text-white hover:shadow-md enabled:hover:bg-blue-500/90 enabled:active:bg-blue-500/80 disabled:bg-gray-400;
+    @apply bg-accent enabled:hover:bg-accent/90 enabled:active:bg-accent/80 text-white hover:shadow-md disabled:bg-gray-400;
   }
 
   .icon-button {
     @apply rounded-full p-2 transition-colors hover:bg-gray-100 active:bg-gray-200 dark:hover:bg-gray-800 dark:active:bg-gray-700;
+  }
+
+  .print-page {
+    @apply bg-muted-foreground grid h-screen w-full gap-0.5 p-0.5 print:bg-gray-300;
   }
 }
 
@@ -98,4 +104,14 @@ body {
 
 select {
   appearance: none;
+}
+
+body {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  scrollbar-color: var(--color-gray-500) transparent;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
 }

@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Card } from './utils';
 import { Dropdown } from './dropdown';
+import { Printer } from 'lucide-react';
+import clsx from 'clsx';
 
 interface PrintOptions {
   fontSize: number;
   rows: number;
   columns: number;
+  showBorders: boolean;
 }
 
 function PrintLayoutGenerator({
@@ -15,6 +18,8 @@ function PrintLayoutGenerator({
   data: Card[];
   options: PrintOptions;
 }) {
+  const pageStyle = `bg-muted-foreground grid h-screen w-full ${options.showBorders ? 'gap-0.5 p-0.5 print:bg-gray-300' : 'bg-transparent'}`;
+
   const cardsPerPage = options.rows * options.columns;
   const pages: React.ReactNode[] = [];
 
@@ -24,7 +29,7 @@ function PrintLayoutGenerator({
     const frontCards = currentPageCards.map((card, idx) => (
       <div
         key={`front-${i}-${idx}`}
-        className="flex items-center justify-center border border-gray-500 p-2 text-center"
+        className="bg-background flex items-center justify-center p-2 text-center print:bg-white"
       >
         {card.front}
       </div>
@@ -33,7 +38,7 @@ function PrintLayoutGenerator({
     const backCards = currentPageCards.map((card, idx) => (
       <div
         key={`back-${i}-${idx}`}
-        className="flex items-center justify-center border border-gray-500 p-2 text-center"
+        className="bg-background flex items-center justify-center p-2 text-center print:bg-white"
       >
         {card.back}
       </div>
@@ -42,7 +47,7 @@ function PrintLayoutGenerator({
     pages.push(
       <div
         key={`front-page-${i}`}
-        className="bg-background grid h-screen w-full print:bg-white"
+        className={pageStyle}
         style={{
           gridTemplateColumns: `repeat(${options.columns}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${options.rows}, minmax(0, 1fr))`,
@@ -53,7 +58,7 @@ function PrintLayoutGenerator({
       </div>,
       <div
         key={`back-page-${i}`}
-        className="bg-background grid h-screen w-full -scale-x-100 *:-scale-x-100 print:bg-white"
+        className={clsx(pageStyle, '-scale-x-100', '*:-scale-x-100')}
         style={{
           gridTemplateColumns: `repeat(${options.columns}, minmax(0, 1fr))`,
           gridTemplateRows: `repeat(${options.rows}, minmax(0, 1fr))`,
@@ -75,17 +80,24 @@ function PrintLayoutGenerator({
 type Orientation = 'portrait' | 'landscape';
 
 export default function Print({ data }: { data: Card[] }) {
-  const [fontSize, setFontSize] = useState(12);
+  const [fontSize, setFontSize] = useState(20);
   const [rows, _setRows] = useState(4);
   const [columns, _setColumns] = useState(4);
   const [orientation, setOrientation] = useState<Orientation>('portrait');
+  const [showBorders, setShowBorders] = useState(true);
+  const initialScrolled = useRef(false);
+
+  if (!initialScrolled.current) {
+    initialScrolled.current = true;
+    window.scrollTo(0, 0);
+  }
 
   useEffect(() => {
     const pageSettings = document.getElementById('page-settings');
     if (pageSettings) {
-      pageSettings.innerHTML = `@page {size: ${orientation}; margin: 0;}`;
+      pageSettings.innerHTML = `@page {size: ${orientation};${!showBorders ? ' margin: 0;' : ''}}`;
     }
-  }, [orientation]);
+  }, [orientation, showBorders]);
 
   const setRows = (val: string) => {
     if (parseInt(val) || val === '') _setRows(parseInt(val));
@@ -107,7 +119,7 @@ export default function Print({ data }: { data: Card[] }) {
             max={30}
             value={fontSize}
             onChange={(e) => setFontSize(parseInt(e.target.value))}
-            className="h-2 flex-1 cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700 dark:accent-blue-600"
+            className="dark:accent-accent h-2 flex-1 cursor-pointer appearance-none rounded-lg bg-gray-200 dark:bg-gray-700"
           />
           <span>{fontSize}px</span>
         </p>
@@ -148,6 +160,34 @@ export default function Print({ data }: { data: Card[] }) {
             </div>
           </div>
         </div>
+
+        <div className="mt-6">
+          <p className="mb-4 text-lg">Other options</p>
+          <div className="mt-2 flex items-center">
+            <label className="inline-flex cursor-pointer items-center">
+              <input
+                type="checkbox"
+                value=""
+                className="peer sr-only"
+                checked={showBorders}
+                onChange={(e) => setShowBorders(e.target.checked)}
+              />
+              <div className="peer peer-checked:bg-accent relative h-6 w-11 rounded-full bg-gray-200 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-gray-700"></div>
+              <span className="ms-3 font-medium text-gray-900 dark:text-gray-300">
+                Show borders
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div className="flex flex-row-reverse">
+          <button
+            onClick={() => window.print()}
+            className="button primary mt-5 flex gap-4"
+          >
+            Print
+          </button>
+        </div>
       </div>
       <div className="col-span-2 flex h-full flex-col gap-4">
         <h2 className="text-3xl">Preview</h2>
@@ -158,6 +198,7 @@ export default function Print({ data }: { data: Card[] }) {
               fontSize,
               rows,
               columns,
+              showBorders,
             }}
           />
         </div>

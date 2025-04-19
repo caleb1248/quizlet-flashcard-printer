@@ -8,10 +8,11 @@ export default function PrePrint(props: {
   onComplete: () => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
   const [err, setErr] = useState(' ');
 
   return (
-    <div className="flex justify-center lg:pt-16">
+    <div className="flex justify-center lg:pt-10">
       <div className="container w-full max-w-3xl rounded-lg border-gray-500 p-6">
         <HowToExport ref={dialogRef} />
         <h2 className="text-3xl font-bold">Import your quizlet set</h2>
@@ -28,9 +29,13 @@ export default function PrePrint(props: {
         <textarea
           className="w-full resize-none rounded-lg bg-gray-100 p-3 focus:outline-0 dark:bg-gray-800"
           placeholder="Your set data..."
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
           onInput={(e) => {
             e.currentTarget.style.height = '';
-            e.currentTarget.style.height = `${Math.min(e.currentTarget.scrollHeight, 500)}px`;
+            e.currentTarget.style.height = `${Math.min(e.currentTarget.scrollHeight, 400)}px`;
             const text = (e.target as HTMLTextAreaElement).value;
 
             if (!text.trim()) {
@@ -46,6 +51,13 @@ export default function PrePrint(props: {
               setErr((error as Error).message);
             }
           }}
+          onPaste={(e) =>
+            setTimeout(
+              () =>
+                nextButtonRef.current?.scrollIntoView({ behavior: 'smooth' }),
+              0,
+            )
+          }
         ></textarea>
 
         {err && <p className="text-red-500">{err}</p>}
@@ -54,6 +66,7 @@ export default function PrePrint(props: {
             className="button primary enabled:group disabled:transition-none"
             disabled={err !== ''}
             onClick={() => props.onComplete()}
+            ref={nextButtonRef}
           >
             Next{' '}
             <ArrowRight className="ml-2 inline-block transition-transform ease-out group-active:translate-x-1" />
